@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP CSP — Big Idea 3: Algorithms & Programming</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #161921;
+  --surface2: #1e2330;
+  --surface3: #252c3a;
+  --accent: #4fffb0;
+  --accent2: #7eb8ff;
+  --accent3: #ffb347;
+  --accent4: #ff6b9d;
+  --text: #e8eaf0;
+  --text-muted: #8892a4;
+  --text-dim: #4a5568;
+  --border: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --mono: 'IBM Plex Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body: 'Lora', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  padding: 80px 40px 60px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(78,255,176,0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 40% at 80% 80%, rgba(126,184,255,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.1s;
+}
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.25s;
+}
+.hero h1 span { color: var(--accent); }
+.hero-sub {
+  font-size: 17px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.4s;
+}
+.hero-pills {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.55s;
+}
+.pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.pill.active { border-color: var(--accent); color: var(--accent); background: rgba(79,255,176,0.07); }
+
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── MAIN ── */
+.main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── SECTION HEADERS ── */
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 60px 0 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(79,255,176,0.1);
+  border: 1px solid rgba(79,255,176,0.25);
+  border-radius: 6px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+.section-header h2 {
+  font-family: var(--display);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.section-header h2 small {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+/* ── CONCEPT CARDS ── */
+.concept-grid {
+  display: grid;
+  gap: 16px;
+}
+.concept-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.concept-card:hover { border-color: rgba(255,255,255,0.12); }
+.concept-card.highlight { border-color: rgba(79,255,176,0.2); }
+.concept-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.concept-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.ic-green { background: rgba(79,255,176,0.12); }
+.ic-blue { background: rgba(126,184,255,0.12); }
+.ic-orange { background: rgba(255,179,71,0.12); }
+.ic-pink { background: rgba(255,107,157,0.12); }
+.concept-title {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+.concept-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+.concept-chevron {
+  color: var(--text-dim);
+  transition: transform 0.25s;
+  font-size: 12px;
+}
+.concept-card.open .concept-chevron { transform: rotate(180deg); }
+.concept-body {
+  display: none;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.concept-card.open .concept-body { display: block; }
+.concept-body p {
+  color: var(--text-muted);
+  margin-top: 14px;
+  font-size: 15px;
+}
+.concept-body strong { color: var(--text); }
+
+/* ── CODE BLOCKS ── */
+.code-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+}
+.kw { color: #c792ea; }
+.fn { color: #82aaff; }
+.str { color: #c3e88d; }
+.num { color: var(--accent3); }
+.cm { color: var(--text-dim); font-style: italic; }
+.hl { color: var(--accent); }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.callout-tip { background: rgba(79,255,176,0.07); border-left: 3px solid var(--accent); color: #9ff5d1; }
+.callout-warn { background: rgba(255,179,71,0.07); border-left: 3px solid var(--accent3); color: #f5d08a; }
+.callout-info { background: rgba(126,184,255,0.07); border-left: 3px solid var(--accent2); color: #aac8f5; }
+.callout strong { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+/* ── COMPARISON TABLE ── */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 14px;
+}
+.compare-table th {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  background: var(--surface2);
+}
+.compare-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+.compare-table td:first-child { color: var(--text); font-weight: 500; }
+.compare-table tr:last-child td { border-bottom: none; }
+
+/* ── TAG CHIPS ── */
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.tag.green { color: var(--accent); border-color: rgba(79,255,176,0.3); background: rgba(79,255,176,0.05); }
+.tag.blue { color: var(--accent2); border-color: rgba(126,184,255,0.3); background: rgba(126,184,255,0.05); }
+.tag.orange { color: var(--accent3); border-color: rgba(255,179,71,0.3); background: rgba(255,179,71,0.05); }
+
+/* ══════════════════════════════════════════
+   QUIZ SECTION
+══════════════════════════════════════════ */
+#quiz-section { display: none; }
+#quiz-section.active { display: block; }
+
+.quiz-intro {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.quiz-intro h3 {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.quiz-intro p { color: var(--text-muted); font-size: 15px; }
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.q-card.answered { border-color: rgba(255,255,255,0.1); }
+.q-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.q-text {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.q-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.option-btn:hover:not(:disabled) { background: var(--surface3); border-color: rgba(255,255,255,0.12); }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { background: rgba(79,255,176,0.1); border-color: var(--accent); color: #9ff5d1; }
+.option-btn.wrong { background: rgba(255,107,157,0.1); border-color: var(--accent4); color: #ffafc8; }
+.option-letter {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  width: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--text-dim);
+}
+.option-btn.correct .option-letter { color: var(--accent); }
+.option-btn.wrong .option-letter { color: var(--accent4); }
+
+.q-feedback {
+  display: none;
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.q-card.answered .q-feedback { display: block; }
+.q-feedback.correct { background: rgba(79,255,176,0.07); border-left: 3px solid var(--accent); color: #9ff5d1; }
+.q-feedback.wrong { background: rgba(255,107,157,0.07); border-left: 3px solid var(--accent4); color: #ffafc8; }
+.q-feedback strong { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 4px; }
+
+/* ── SCORE PANEL ── */
+.score-panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  margin-top: 32px;
+}
+.score-panel.show { display: block; }
+.score-big {
+  font-family: var(--display);
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.score-big.great { color: var(--accent); }
+.score-big.good { color: var(--accent2); }
+.score-big.ok { color: var(--accent3); }
+.score-big.low { color: var(--accent4); }
+.score-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.score-msg { font-size: 16px; color: var(--text-muted); margin-top: 16px; max-width: 400px; margin-left: auto; margin-right: auto; }
+.retry-btn {
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  padding: 12px 28px;
+  background: rgba(79,255,176,0.1);
+  border: 1px solid rgba(79,255,176,0.3);
+  color: var(--accent);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.retry-btn:hover { background: rgba(79,255,176,0.18); }
+.breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  text-align: left;
+}
+.bd-item {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.bd-item-label { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+.bd-item-val { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+/* ── PROGRESS BAR ── */
+.quiz-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.progress-label { font-family: var(--mono); font-size: 11px; color: var(--text-dim); white-space: nowrap; }
+
+/* ── UTILITY ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.primer-section { display: none; }
+.primer-section.active { display: block; }
+.all-section { display: block; }
+
+/* section view toggle */
+.primer-all .primer-section { display: block; }
+
+/* ── SECTION NAV ICONS ── */
+.view-all-btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: block;
+  margin: 0 auto 32px;
+}
+.view-all-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">AP Computer Science Principles</div>
+  <h1>Big Idea <span>3</span><br>Algorithms &amp; Programming</h1>
+  <p class="hero-sub">A complete study guide covering every learning objective — with an AP-style knowledge test at the end.</p>
+  <div class="hero-pills">
+    <span class="pill active">3.1 Variables</span>
+    <span class="pill active">3.2 Data Abstraction</span>
+    <span class="pill active">3.3 Math Expressions</span>
+    <span class="pill active">3.4 Strings</span>
+    <span class="pill active">3.5 Boolean Expressions</span>
+    <span class="pill active">3.6 Conditionals</span>
+    <span class="pill active">3.7 Nested Conditionals</span>
+    <span class="pill active">3.8 Iteration</span>
+    <span class="pill active">3.9 Developing Algorithms</span>
+    <span class="pill active">3.10 Lists</span>
+    <span class="pill active">3.11 Binary Search</span>
+    <span class="pill active">3.12 Calling Procedures</span>
+    <span class="pill active">3.13 Developing Procedures</span>
+    <span class="pill active">3.14 Libraries</span>
+    <span class="pill active">3.15 Random Values</span>
+    <span class="pill active">3.16 Simulations</span>
+    <span class="pill active">3.17 Algorithmic Efficiency</span>
+    <span class="pill active">3.18 Undecidable Problems</span>
+  </div>
+</div>
+
+<nav class="nav" id="mainNav">
+  <button class="nav-btn active" onclick="showView('primer')">📖 Study Guide</button>
+  <button class="nav-btn" onclick="showView('quiz')">✏️ Knowledge Test</button>
+</nav>
+
+<div class="main">
+
+<!-- ════════════════════════════ PRIMER ════════════════════════════ -->
+<div id="primer-view">
+
+<!-- 3.1 Variables -->
+<div class="section-header">
+  <div class="section-num">3.1</div>
+  <h2><small>Variables and Assignments</small>Storing and Changing Data</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open highlight">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-green">📦</div>
+      <div class="concept-title">What is a Variable?</div>
+      <div class="concept-id">3.1.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>variable</strong> is a named storage location in memory that holds a value. That value can be a number, text, true/false, or more complex data. The variable's name lets you refer to the stored value throughout your program.</p>
+      <div class="code-block"><span class="cm">// Assignment: name ← value (AP pseudocode notation)</span>
+<span class="hl">score</span> ← <span class="num">0</span>
+<span class="hl">playerName</span> ← <span class="str">"Alex"</span>
+<span class="hl">isActive</span> ← <span class="kw">true</span>
+
+<span class="cm">// Re-assignment changes the value</span>
+<span class="hl">score</span> ← <span class="hl">score</span> + <span class="num">10</span>    <span class="cm">// score is now 10</span></div>
+      <div class="callout callout-tip"><strong>Exam Tip</strong>When a variable is assigned a new value, the old value is lost. The right-hand side is evaluated first, then stored in the variable on the left.</div>
+      <div class="tags"><span class="tag green">variable</span><span class="tag green">assignment</span><span class="tag green">data types</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.2 Data Abstraction -->
+<div class="section-header">
+  <div class="section-num">3.2</div>
+  <h2><small>Data Abstraction</small>Managing Complexity with Lists</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-blue">🗃️</div>
+      <div class="concept-title">Lists and Data Abstraction</div>
+      <div class="concept-id">3.2.A / 3.2.B</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p><strong>Data abstraction</strong> means grouping multiple values under one name. A <strong>list</strong> stores an ordered collection of items. Instead of ten separate variables, you use one list — making the program simpler to write and change.</p>
+      <div class="code-block"><span class="kw">scores</span> ← [<span class="num">85</span>, <span class="num">92</span>, <span class="num">78</span>, <span class="num">95</span>, <span class="num">88</span>]
+
+<span class="cm">// Access by index (AP pseudocode uses 1-based indexing!)</span>
+<span class="fn">OUTPUT</span>(<span class="kw">scores</span>[<span class="num">1</span>])    <span class="cm">// outputs 85</span>
+<span class="fn">OUTPUT</span>(<span class="kw">scores</span>[<span class="num">3</span>])    <span class="cm">// outputs 78</span>
+
+<span class="cm">// Useful list operations</span>
+<span class="fn">APPEND</span>(<span class="kw">scores</span>, <span class="num">100</span>) <span class="cm">// adds 100 to the end</span>
+<span class="fn">INSERT</span>(<span class="kw">scores</span>, <span class="num">2</span>, <span class="num">90</span>) <span class="cm">// inserts 90 at index 2</span>
+<span class="fn">REMOVE</span>(<span class="kw">scores</span>, <span class="num">1</span>)    <span class="cm">// removes item at index 1</span>
+<span class="fn">LENGTH</span>(<span class="kw">scores</span>)       <span class="cm">// returns number of items</span></div>
+      <div class="callout callout-warn"><strong>Watch Out</strong>AP CSP pseudocode uses <strong>1-based indexing</strong> — the first element is at index 1, not 0. This differs from most real programming languages like Python and JavaScript.</div>
+      <p>Data abstraction <strong>manages complexity</strong> because you can process any number of items with the same code. A loop over a 5-item list works identically on a 500-item list.</p>
+      <div class="tags"><span class="tag blue">list</span><span class="tag blue">index</span><span class="tag blue">APPEND</span><span class="tag blue">LENGTH</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.3 Math -->
+<div class="section-header">
+  <div class="section-num">3.3</div>
+  <h2><small>Mathematical Expressions</small>Arithmetic and Modulus</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-orange">🔢</div>
+      <div class="concept-title">Arithmetic Operators &amp; MOD</div>
+      <div class="concept-id">3.3.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>Programs can perform math using standard operators. The <strong>MOD operator</strong> (modulus) returns the <em>remainder</em> after division and is especially common on the AP exam.</p>
+      <table class="compare-table">
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+        <tr><td>+  −  *</td><td>Add, subtract, multiply</td><td>7 * 3</td><td>21</td></tr>
+        <tr><td>/</td><td>Divide (may produce decimal)</td><td>7 / 2</td><td>3.5</td></tr>
+        <tr><td>MOD</td><td>Remainder after division</td><td>7 MOD 2</td><td>1</td></tr>
+      </table>
+      <div class="callout callout-info"><strong>MOD Use Cases</strong>Check if a number is even: <code>n MOD 2 = 0</code>. Cycle through indices: <code>(i + 1) MOD listLength</code>. Check divisibility: <code>n MOD 5 = 0</code> means n is divisible by 5.</div>
+      <div class="tags"><span class="tag orange">MOD</span><span class="tag orange">arithmetic</span><span class="tag orange">remainder</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.4 Strings -->
+<div class="section-header">
+  <div class="section-num">3.4</div>
+  <h2><small>Strings</small>Working with Text</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-pink">🔤</div>
+      <div class="concept-title">String Operations</div>
+      <div class="concept-id">3.4.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>string</strong> is a sequence of characters (letters, digits, symbols, spaces). Strings are used for text input/output, labels, and storing names or messages.</p>
+      <div class="code-block"><span class="hl">name</span> ← <span class="str">"Alice"</span>
+<span class="hl">greeting</span> ← <span class="str">"Hello, "</span> + <span class="hl">name</span>   <span class="cm">// "Hello, Alice" (concatenation)</span>
+
+<span class="cm">// Common string procedures (may vary by platform)</span>
+<span class="fn">len</span>(<span class="hl">name</span>)          <span class="cm">// 5 — number of characters</span>
+<span class="fn">substring</span>(<span class="hl">name</span>, <span class="num">1</span>, <span class="num">3</span>)  <span class="cm">// "Ali" — chars at positions 1–3</span></div>
+      <div class="callout callout-tip"><strong>Exam Tip</strong>String concatenation joins strings end-to-end. Numbers must usually be converted to strings before concatenating: <code>"Score: " + numToString(score)</code>.</div>
+      <div class="tags"><span class="tag">string</span><span class="tag">concatenation</span><span class="tag">substring</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.5 Booleans -->
+<div class="section-header">
+  <div class="section-num">3.5</div>
+  <h2><small>Boolean Expressions</small>True, False, and Logic</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-green">⚡</div>
+      <div class="concept-title">Relational &amp; Logical Operators</div>
+      <div class="concept-id">3.5.A / 3.5.B</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>Boolean expression</strong> evaluates to either <strong>true</strong> or <strong>false</strong>. These are the building blocks of all decisions in a program.</p>
+      <table class="compare-table">
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+        <tr><td>=</td><td>Equal to</td><td>5 = 5</td><td>true</td></tr>
+        <tr><td>≠</td><td>Not equal to</td><td>5 ≠ 3</td><td>true</td></tr>
+        <tr><td>&lt;  &gt;  ≤  ≥</td><td>Comparison</td><td>4 &lt; 7</td><td>true</td></tr>
+        <tr><td>AND</td><td>Both must be true</td><td>true AND false</td><td>false</td></tr>
+        <tr><td>OR</td><td>At least one true</td><td>true OR false</td><td>true</td></tr>
+        <tr><td>NOT</td><td>Flips the value</td><td>NOT true</td><td>false</td></tr>
+      </table>
+      <div class="code-block"><span class="cm">// Compound boolean expressions</span>
+<span class="hl">age</span> ← <span class="num">17</span>
+<span class="hl">hasPermit</span> ← <span class="kw">true</span>
+
+<span class="cm">// Can drive if 16+ AND has permit, OR if 18+</span>
+<span class="hl">canDrive</span> ← (<span class="hl">age</span> &gt;= <span class="num">16</span> AND <span class="hl">hasPermit</span>) OR (<span class="hl">age</span> &gt;= <span class="num">18</span>)
+<span class="cm">// true AND true = true → canDrive is true</span></div>
+      <div class="callout callout-warn"><strong>Short-Circuit Evaluation</strong>With AND: if the first condition is false, the second is never checked. With OR: if the first condition is true, the second is never checked.</div>
+      <div class="tags"><span class="tag green">AND</span><span class="tag green">OR</span><span class="tag green">NOT</span><span class="tag green">boolean</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.6 Conditionals -->
+<div class="section-header">
+  <div class="section-num">3.6 – 3.7</div>
+  <h2><small>Conditionals &amp; Nested Conditionals</small>Making Decisions</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-blue">🔀</div>
+      <div class="concept-title">IF / ELSE IF / ELSE Structures</div>
+      <div class="concept-id">3.6.A / 3.7.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p><strong>Selection</strong> lets a program take different paths based on conditions. A <strong>nested conditional</strong> is an IF statement placed inside another IF statement, allowing more complex branching logic.</p>
+      <div class="code-block"><span class="cm">// Basic conditional</span>
+<span class="kw">IF</span> (score &gt;= <span class="num">90</span>)
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"A"</span>)
+}
+<span class="kw">ELSE IF</span> (score &gt;= <span class="num">80</span>)
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"B"</span>)
+}
+<span class="kw">ELSE</span>
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"C or below"</span>)
+}
+
+<span class="cm">// Nested conditional</span>
+<span class="kw">IF</span> (isLoggedIn)
+{
+    <span class="kw">IF</span> (isAdmin)
+    {
+        <span class="fn">DISPLAY</span>(<span class="str">"Admin panel"</span>)
+    }
+    <span class="kw">ELSE</span>
+    {
+        <span class="fn">DISPLAY</span>(<span class="str">"User panel"</span>)
+    }
+}
+<span class="kw">ELSE</span>
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"Please log in"</span>)
+}</div>
+      <div class="callout callout-tip"><strong>Exam Tip</strong>Only ONE branch executes in an IF / ELSE IF / ELSE chain — the first condition that evaluates to true. Nested conditionals are only reached if the outer condition is true.</div>
+      <div class="tags"><span class="tag blue">IF</span><span class="tag blue">ELSE IF</span><span class="tag blue">ELSE</span><span class="tag blue">nested</span><span class="tag blue">selection</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.8 Iteration -->
+<div class="section-header">
+  <div class="section-num">3.8</div>
+  <h2><small>Iteration</small>Loops and Repetition</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-orange">🔄</div>
+      <div class="concept-title">REPEAT, REPEAT UNTIL, FOR EACH</div>
+      <div class="concept-id">3.8.A / 3.8.B</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p><strong>Iteration</strong> is the repetition of a block of code. Loops are used to process lists, repeat actions, and avoid writing the same code multiple times.</p>
+      <div class="code-block"><span class="cm">// REPEAT n TIMES — runs exactly n times</span>
+<span class="kw">REPEAT</span> <span class="num">5</span> <span class="kw">TIMES</span>
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"Hello"</span>)
+}
+
+<span class="cm">// REPEAT UNTIL — runs until condition becomes true</span>
+<span class="hl">count</span> ← <span class="num">1</span>
+<span class="kw">REPEAT UNTIL</span> (count &gt; <span class="num">5</span>)
+{
+    <span class="fn">DISPLAY</span>(count)
+    count ← count + <span class="num">1</span>
+}
+
+<span class="cm">// FOR EACH — iterates over every item in a list</span>
+<span class="hl">scores</span> ← [<span class="num">80</span>, <span class="num">90</span>, <span class="num">70</span>]
+<span class="kw">FOR EACH</span> item <span class="kw">IN</span> scores
+{
+    <span class="fn">DISPLAY</span>(item)
+}</div>
+      <div class="callout callout-warn"><strong>Infinite Loops</strong>A REPEAT UNTIL loop that never reaches its exit condition runs forever. Always verify that the condition can eventually become true.</div>
+      <div class="tags"><span class="tag orange">REPEAT TIMES</span><span class="tag orange">REPEAT UNTIL</span><span class="tag orange">FOR EACH</span><span class="tag orange">iteration</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.9 Developing Algorithms -->
+<div class="section-header">
+  <div class="section-num">3.9</div>
+  <h2><small>Developing Algorithms</small>Sequencing, Selection, Iteration</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-green">🧠</div>
+      <div class="concept-title">The Three Building Blocks of All Algorithms</div>
+      <div class="concept-id">3.9.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>Every algorithm — no matter how complex — is built from exactly three structures. Understanding them is central to the AP exam and the Create Task.</p>
+      <table class="compare-table">
+        <tr><th>Structure</th><th>What It Does</th><th>Example</th></tr>
+        <tr><td>Sequencing</td><td>Steps execute in order, one after another</td><td>input → calculate → display</td></tr>
+        <tr><td>Selection</td><td>Code takes different paths based on a condition</td><td>IF score ≥ 90 → "A"</td></tr>
+        <tr><td>Iteration</td><td>Code repeats based on a condition or count</td><td>REPEAT UNTIL done</td></tr>
+      </table>
+      <div class="callout callout-info"><strong>Algorithm Equivalence</strong>Two algorithms that produce the same output for every possible input are considered equivalent — even if they use completely different steps or structures.</div>
+      <div class="tags"><span class="tag green">sequencing</span><span class="tag green">selection</span><span class="tag green">iteration</span><span class="tag green">algorithm</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.10 Lists -->
+<div class="section-header">
+  <div class="section-num">3.10</div>
+  <h2><small>List Operations</small>Traversing and Manipulating Lists</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-blue">📋</div>
+      <div class="concept-title">Traversal Algorithms &amp; List Procedures</div>
+      <div class="concept-id">3.10.A / 3.10.B</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>list traversal</strong> accesses each element one at a time, usually with a loop. Traversals are used to search, filter, sum, or transform list data.</p>
+      <div class="code-block"><span class="cm">// Find the maximum value in a list</span>
+<span class="hl">nums</span> ← [<span class="num">3</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">9</span>, <span class="num">4</span>]
+<span class="hl">maxVal</span> ← <span class="hl">nums</span>[<span class="num">1</span>]
+
+<span class="kw">FOR EACH</span> n <span class="kw">IN</span> <span class="hl">nums</span>
+{
+    <span class="kw">IF</span> (n &gt; <span class="hl">maxVal</span>)
+    {
+        <span class="hl">maxVal</span> ← n
+    }
+}
+<span class="fn">DISPLAY</span>(<span class="hl">maxVal</span>)  <span class="cm">// 9</span>
+
+<span class="cm">// Build a new filtered list</span>
+<span class="hl">passing</span> ← []
+<span class="kw">FOR EACH</span> score <span class="kw">IN</span> <span class="hl">nums</span>
+{
+    <span class="kw">IF</span> (score &gt;= <span class="num">5</span>)
+    {
+        <span class="fn">APPEND</span>(<span class="hl">passing</span>, score)
+    }
+}</div>
+      <div class="tags"><span class="tag blue">traversal</span><span class="tag blue">APPEND</span><span class="tag blue">REMOVE</span><span class="tag blue">INSERT</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.11 Binary Search -->
+<div class="section-header">
+  <div class="section-num">3.11</div>
+  <h2><small>Binary Search</small>Searching Sorted Data Efficiently</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-orange">🔍</div>
+      <div class="concept-title">Linear Search vs. Binary Search</div>
+      <div class="concept-id">3.11.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p><strong>Linear search</strong> checks each element one-by-one from the beginning — works on any list. <strong>Binary search</strong> repeatedly halves the search space — works only on <em>sorted</em> lists but is dramatically faster.</p>
+      <table class="compare-table">
+        <tr><th>Algorithm</th><th>Requires Sorted?</th><th>Max Steps (n items)</th><th>Best Case</th></tr>
+        <tr><td>Linear search</td><td>No</td><td>n steps</td><td>1 (first item matches)</td></tr>
+        <tr><td>Binary search</td><td>Yes</td><td>log₂(n) steps</td><td>1 (middle item matches)</td></tr>
+      </table>
+      <div class="callout callout-info"><strong>Binary Search Example</strong>Searching a sorted list of 1,000 items: linear search takes up to 1,000 steps. Binary search takes at most 10 steps (log₂1000 ≈ 10). For 1,000,000 items: binary search takes at most 20 steps.</div>
+      <p>Binary search works by checking the <strong>middle element</strong>. If too high, search the left half. If too low, search the right half. Repeat until found or the search space is empty.</p>
+      <div class="tags"><span class="tag orange">binary search</span><span class="tag orange">linear search</span><span class="tag orange">sorted list</span><span class="tag orange">log n</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.12 / 3.13 Procedures -->
+<div class="section-header">
+  <div class="section-num">3.12 – 3.13</div>
+  <h2><small>Calling &amp; Developing Procedures</small>Functions and Abstraction</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-pink">⚙️</div>
+      <div class="concept-title">Procedures, Parameters, and Return Values</div>
+      <div class="concept-id">3.12.A / 3.13.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>procedure</strong> (function) is a named, reusable block of code. <strong>Parameters</strong> are inputs to the procedure. A <strong>return value</strong> is the output. Procedures reduce repetition and manage complexity by giving a name to a multi-step process.</p>
+      <div class="code-block"><span class="cm">// Defining a procedure with a parameter and return value</span>
+<span class="kw">PROCEDURE</span> <span class="fn">getGrade</span>(score)
+{
+    <span class="kw">IF</span> (score &gt;= <span class="num">90</span>)
+    {
+        <span class="kw">RETURN</span> <span class="str">"A"</span>
+    }
+    <span class="kw">ELSE IF</span> (score &gt;= <span class="num">80</span>)
+    {
+        <span class="kw">RETURN</span> <span class="str">"B"</span>
+    }
+    <span class="kw">ELSE</span>
+    {
+        <span class="kw">RETURN</span> <span class="str">"C or below"</span>
+    }
+}
+
+<span class="cm">// Calling the procedure</span>
+<span class="hl">result</span> ← <span class="fn">getGrade</span>(<span class="num">87</span>)  <span class="cm">// result = "B"</span>
+<span class="fn">DISPLAY</span>(<span class="fn">getGrade</span>(<span class="num">95</span>))   <span class="cm">// displays "A"</span></div>
+      <div class="callout callout-tip"><strong>Procedural Abstraction</strong>When you call a procedure, you don't need to know how it works internally — only what inputs it takes and what it returns. This is the essence of abstraction.</div>
+      <table class="compare-table">
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td>Parameter</td><td>Variable in the procedure definition that receives an argument</td></tr>
+        <tr><td>Argument</td><td>Actual value passed to the procedure when calling it</td></tr>
+        <tr><td>Return value</td><td>Value the procedure sends back to the calling code</td></tr>
+      </table>
+      <div class="tags"><span class="tag">PROCEDURE</span><span class="tag">RETURN</span><span class="tag">parameter</span><span class="tag">argument</span><span class="tag">abstraction</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.14 Libraries -->
+<div class="section-header">
+  <div class="section-num">3.14</div>
+  <h2><small>Libraries</small>Using Pre-Built Code</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-green">📚</div>
+      <div class="concept-title">APIs and Libraries</div>
+      <div class="concept-id">3.14.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>library</strong> is a collection of pre-written procedures that programmers can use. An <strong>API (Application Programming Interface)</strong> specifies how to use a library — the procedure names, parameters, and return values — without exposing the internal implementation.</p>
+      <div class="callout callout-info"><strong>Why Libraries Matter</strong>Libraries allow programmers to build on existing work rather than solving every problem from scratch. You can use a random number library without understanding how random numbers are generated internally.</div>
+      <p>Using a library procedure: you must know the <strong>specification</strong> (what inputs it takes, what it returns), but not the <strong>implementation</strong> (how it works internally).</p>
+      <div class="tags"><span class="tag green">library</span><span class="tag green">API</span><span class="tag green">specification</span><span class="tag green">abstraction</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.15 Random Values -->
+<div class="section-header">
+  <div class="section-num">3.15</div>
+  <h2><small>Random Values</small>Introducing Unpredictability</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-orange">🎲</div>
+      <div class="concept-title">RANDOM and Non-Deterministic Behavior</div>
+      <div class="concept-id">3.15.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p><code>RANDOM(a, b)</code> returns a random integer from <strong>a to b inclusive</strong>. Programs that use random values are <strong>non-deterministic</strong> — the same inputs can produce different outputs on different runs.</p>
+      <div class="code-block"><span class="cm">// Simulate a coin flip</span>
+<span class="hl">flip</span> ← <span class="fn">RANDOM</span>(<span class="num">1</span>, <span class="num">2</span>)
+<span class="kw">IF</span> (flip = <span class="num">1</span>)
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"Heads"</span>)
+}
+<span class="kw">ELSE</span>
+{
+    <span class="fn">DISPLAY</span>(<span class="str">"Tails"</span>)
+}
+
+<span class="cm">// Roll a six-sided die</span>
+<span class="hl">roll</span> ← <span class="fn">RANDOM</span>(<span class="num">1</span>, <span class="num">6</span>)</div>
+      <div class="callout callout-tip"><strong>Exam Tip</strong>RANDOM(1, 6) can return 1, 2, 3, 4, 5, or 6. Both endpoints are included. This is important for calculating probabilities.</div>
+      <div class="tags"><span class="tag orange">RANDOM</span><span class="tag orange">non-deterministic</span><span class="tag orange">simulation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.16 Simulations -->
+<div class="section-header">
+  <div class="section-num">3.16</div>
+  <h2><small>Simulations</small>Modeling Real-World Phenomena</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-pink">🌍</div>
+      <div class="concept-title">What Makes a Good Simulation?</div>
+      <div class="concept-id">3.16.A / 3.16.B</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>A <strong>simulation</strong> is a program that models a real-world process. Simulations are used when the real process is too dangerous, expensive, or time-consuming to test directly (e.g., climate modeling, crash testing, disease spread).</p>
+      <table class="compare-table">
+        <tr><th>Feature</th><th>Simulation</th><th>Real-World Experiment</th></tr>
+        <tr><td>Cost</td><td>Low — just computing resources</td><td>Can be very expensive</td></tr>
+        <tr><td>Safety</td><td>No real risk</td><td>May be dangerous</td></tr>
+        <tr><td>Speed</td><td>Can run faster than real time</td><td>Runs at real-time speed</td></tr>
+        <tr><td>Accuracy</td><td>Depends on model assumptions</td><td>Reflects actual reality</td></tr>
+      </table>
+      <div class="callout callout-warn"><strong>Limitations of Simulations</strong>Simulations are only as accurate as the assumptions built into them. If the model oversimplifies reality, the results can be misleading. Always question what a simulation leaves out.</div>
+      <div class="tags"><span class="tag">simulation</span><span class="tag">model</span><span class="tag">abstraction</span><span class="tag">random</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.17 Efficiency -->
+<div class="section-header">
+  <div class="section-num">3.17</div>
+  <h2><small>Algorithmic Efficiency</small>Reasonable vs. Unreasonable Time</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-green">⏱️</div>
+      <div class="concept-title">Polynomial vs. Exponential Time</div>
+      <div class="concept-id">3.17.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>An algorithm's <strong>efficiency</strong> describes how its runtime grows as input size increases. The AP exam distinguishes between <strong>reasonable</strong> (polynomial) and <strong>unreasonable</strong> (exponential) run times.</p>
+      <table class="compare-table">
+        <tr><th>Efficiency Type</th><th>Growth Rate</th><th>Example</th><th>Feasible for large n?</th></tr>
+        <tr><td>Constant — O(1)</td><td>Same regardless of n</td><td>Accessing list[i]</td><td>Yes</td></tr>
+        <tr><td>Linear — O(n)</td><td>Proportional to n</td><td>Linear search</td><td>Yes</td></tr>
+        <tr><td>Polynomial — O(n²)</td><td>Grows as a power of n</td><td>Nested loops</td><td>Often yes</td></tr>
+        <tr><td>Exponential — O(2ⁿ)</td><td>Doubles per additional item</td><td>Checking all subsets</td><td><strong>No</strong></td></tr>
+      </table>
+      <div class="callout callout-warn"><strong>Heuristics</strong>For problems where no efficient algorithm exists, a <strong>heuristic</strong> finds an approximate (not guaranteed optimal) solution in reasonable time. Heuristics don't always produce the best answer but are practical for large inputs.</div>
+      <div class="tags"><span class="tag green">polynomial</span><span class="tag green">exponential</span><span class="tag green">heuristic</span><span class="tag green">efficiency</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.18 Undecidable -->
+<div class="section-header">
+  <div class="section-num">3.18</div>
+  <h2><small>Undecidable Problems</small>The Limits of Computing</h2>
+</div>
+<div class="concept-grid">
+  <div class="concept-card open">
+    <div class="concept-head" onclick="toggleCard(this)">
+      <div class="concept-icon ic-pink">∞</div>
+      <div class="concept-title">The Halting Problem &amp; Undecidability</div>
+      <div class="concept-id">3.18.A</div>
+      <div class="concept-chevron">▼</div>
+    </div>
+    <div class="concept-body">
+      <p>Some problems are <strong>undecidable</strong> — no algorithm can solve them for all possible inputs, even with unlimited time and memory. This is a fundamental limit of computing, not just a technology limitation.</p>
+      <div class="callout callout-warn"><strong>The Halting Problem</strong>Can we write a program that determines whether any arbitrary program will halt (finish running) or run forever? Alan Turing proved in 1936 that this is impossible — no such program can exist. This is the most famous undecidable problem.</div>
+      <table class="compare-table">
+        <tr><th>Category</th><th>Definition</th><th>Example</th></tr>
+        <tr><td>Decidable</td><td>An algorithm exists that always gives a correct yes/no answer</td><td>Is this number prime?</td></tr>
+        <tr><td>Undecidable</td><td>No algorithm can solve it for all inputs</td><td>Will this program halt?</td></tr>
+      </table>
+      <div class="callout callout-info"><strong>Key Distinction</strong>An undecidable problem is different from an unsolved problem. It's not that we haven't found the algorithm yet — it's been proven that no such algorithm can exist.</div>
+      <div class="tags"><span class="tag">undecidable</span><span class="tag">halting problem</span><span class="tag">Turing</span><span class="tag">limits</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end primer-view -->
+
+<!-- ════════════════════════════ QUIZ ════════════════════════════ -->
+<div id="quiz-view" style="display:none;">
+
+<div class="section-header" style="margin-top:40px;">
+  <div class="section-num">TEST</div>
+  <h2><small>AP-Style Knowledge Check</small>Big Idea 3 — 20 Questions</h2>
+</div>
+
+<div class="quiz-progress">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 20 answered</div>
+</div>
+
+<div id="quizContainer"></div>
+<div class="score-panel" id="scorePanel"></div>
+
+</div><!-- end quiz-view -->
+
+</div><!-- end main -->
+
+<script>
+// ── NAV TOGGLE ──
+function showView(view) {
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', i === (view==='quiz'?1:0)));
+  document.getElementById('primer-view').style.display = view === 'primer' ? 'block' : 'none';
+  document.getElementById('quiz-view').style.display = view === 'quiz' ? 'block' : 'none';
+  if (view === 'quiz' && !quizBuilt) buildQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── CONCEPT CARD TOGGLE ──
+function toggleCard(head) {
+  const card = head.closest('.concept-card');
+  card.classList.toggle('open');
+}
+
+// ════════════════════════════════════════════
+//  QUIZ DATA
+// ════════════════════════════════════════════
+const questions = [
+  {
+    id: '3.1', text: 'What is the value of x after the following code executes?\nx ← 5\nx ← x * 2\nx ← x + 3',
+    options: ['8','10','13','15'],
+    correct: 2,
+    explanation: 'x starts at 5, then x ← 5 * 2 = 10, then x ← 10 + 3 = 13. Each assignment replaces the previous value.'
+  },
+  {
+    id: '3.1', text: 'A variable is assigned the value 7. Later in the program, the same variable is assigned the value 12. What is the value of the variable after both assignments?',
+    options: ['7','12','19','It causes an error'],
+    correct: 1,
+    explanation: 'When a variable is reassigned, the new value replaces the old one. The variable\'s final value is 12.'
+  },
+  {
+    id: '3.2', text: 'In AP CSP pseudocode, what is the index of the FIRST element in a list named "grades"?',
+    options: ['0','1','-1','It depends on the list'],
+    correct: 1,
+    explanation: 'AP CSP pseudocode uses 1-based indexing. The first element is always at index 1, unlike most programming languages which start at 0.'
+  },
+  {
+    id: '3.3', text: 'What does the expression 17 MOD 5 evaluate to?',
+    options: ['3','2','3.4','12'],
+    correct: 1,
+    explanation: '17 divided by 5 is 3 with a remainder of 2. MOD returns the remainder, so 17 MOD 5 = 2.'
+  },
+  {
+    id: '3.3', text: 'Which expression correctly tests whether a number n is even?',
+    options: ['n / 2 = 0','n MOD 2 = 0','n MOD 2 = 1','n - 2 = 0'],
+    correct: 1,
+    explanation: 'A number is even if it has no remainder when divided by 2. n MOD 2 = 0 is the correct test for evenness.'
+  },
+  {
+    id: '3.5', text: 'Evaluate: (true AND false) OR (NOT false)',
+    options: ['true','false','Error — cannot combine AND and OR','Depends on operator precedence'],
+    correct: 0,
+    explanation: '(true AND false) = false. (NOT false) = true. false OR true = true. The whole expression evaluates to true.'
+  },
+  {
+    id: '3.6', text: 'An IF/ELSE IF/ELSE chain has three conditions. The first condition is false, the second is true, and the third is true. Which branch executes?',
+    options: ['The first branch','The second branch','The third branch','Both the second and third branches'],
+    correct: 1,
+    explanation: 'In an IF/ELSE IF/ELSE chain, only the FIRST condition that evaluates to true runs. Since condition 2 is true and is checked before condition 3, the second branch executes.'
+  },
+  {
+    id: '3.7', text: 'In a nested conditional, the outer IF condition is false. What happens to the inner IF inside it?',
+    options: ['The inner IF always runs','The inner IF is skipped entirely','The inner IF runs but its condition is ignored','It causes a runtime error'],
+    correct: 1,
+    explanation: 'If the outer IF is false, its entire body — including any nested IFs inside it — is skipped completely.'
+  },
+  {
+    id: '3.8', text: 'A REPEAT UNTIL loop has the condition (count > 10) and count starts at 1, increasing by 1 each iteration. How many times does the loop body execute?',
+    options: ['9','10','11','It runs forever'],
+    correct: 1,
+    explanation: 'The loop body runs when count = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 (10 times). After the 10th execution, count becomes 11 and count > 10 is true, so the loop ends.'
+  },
+  {
+    id: '3.8', text: 'Which loop type is BEST suited to process every element in a list without needing to track an index manually?',
+    options: ['REPEAT n TIMES','REPEAT UNTIL','FOR EACH item IN list','A nested REPEAT'],
+    correct: 2,
+    explanation: 'FOR EACH automatically visits every element in a list in order without the programmer needing to manage an index variable.'
+  },
+  {
+    id: '3.10', text: 'A list contains [10, 20, 30, 40, 50]. After REMOVE(list, 2), what does the list contain?',
+    options: ['[10, 20, 30, 40, 50]','[10, 30, 40, 50]','[10, 20, 30, 40]','[20, 30, 40, 50]'],
+    correct: 1,
+    explanation: 'REMOVE(list, 2) removes the element at index 2. In AP pseudocode, index 2 is the second element (20). The remaining list is [10, 30, 40, 50].'
+  },
+  {
+    id: '3.11', text: 'A sorted list has 256 elements. What is the MAXIMUM number of comparisons binary search needs to find an element?',
+    options: ['256','128','8','16'],
+    correct: 2,
+    explanation: 'Binary search takes at most log₂(n) steps. log₂(256) = 8. So at most 8 comparisons are needed — a massive improvement over linear search\'s 256.'
+  },
+  {
+    id: '3.11', text: 'You need to search an unsorted list of 1,000 names. Which algorithm can you use?',
+    options: ['Binary search only','Linear search only','Either linear or binary search','Neither — unsorted lists cannot be searched'],
+    correct: 1,
+    explanation: 'Binary search requires a sorted list. An unsorted list can only be searched with linear search, which checks each element one by one.'
+  },
+  {
+    id: '3.13', text: 'A procedure is defined as: PROCEDURE double(n) { RETURN n * 2 }. What does double(double(3)) return?',
+    options: ['6','9','12','3'],
+    correct: 2,
+    explanation: 'double(3) = 6. Then double(6) = 12. The inner call is evaluated first, then its result is passed to the outer call.'
+  },
+  {
+    id: '3.15', text: 'The call RANDOM(3, 7) can return which of the following values?',
+    options: ['3, 4, 5, 6 only','3, 4, 5, 6, 7','4, 5, 6 only','Any real number between 3 and 7'],
+    correct: 1,
+    explanation: 'RANDOM(a, b) returns an integer from a to b inclusive — meaning both endpoints are included. So RANDOM(3, 7) can return 3, 4, 5, 6, or 7.'
+  },
+  {
+    id: '3.16', text: 'A simulation of a bridge collapse produces results that do not match real-world data. What is the MOST likely cause?',
+    options: ['The computer was too slow','The simulation used random numbers','The model\'s assumptions did not accurately reflect reality','Simulations can never match real-world data'],
+    correct: 2,
+    explanation: 'A simulation is only as accurate as the model it is built on. If the underlying assumptions are wrong or oversimplified, results will deviate from reality.'
+  },
+  {
+    id: '3.17', text: 'Algorithm A takes n² steps. Algorithm B takes 2ⁿ steps. For large values of n, which statement is TRUE?',
+    options: ['A is always faster than B','B is always faster than A','Both are equivalent in speed','A is slower for small n but faster for large n'],
+    correct: 0,
+    explanation: 'Exponential growth (2ⁿ) vastly outpaces polynomial growth (n²) for large inputs. For n = 100: n² = 10,000 steps; 2ⁿ = more than 10 to the 30th power steps. Algorithm A is dramatically faster for large n.'
+  },
+  {
+    id: '3.17', text: 'A programmer uses a heuristic algorithm to solve a complex optimization problem. Which best describes the result?',
+    options: ['The optimal solution is guaranteed','An approximate solution is found in reasonable time','The problem is proven unsolvable','The algorithm always runs in constant time'],
+    correct: 1,
+    explanation: 'Heuristics sacrifice guaranteed optimality for speed. They find a good (but not necessarily perfect) solution in reasonable time, which is useful when no efficient exact algorithm exists.'
+  },
+  {
+    id: '3.18', text: 'The Halting Problem states that:',
+    options: ['All programs eventually halt given enough memory','No program longer than 1,000 lines can be proven to halt','It is impossible to write an algorithm that correctly determines for ALL programs whether they will halt','Modern computers can solve the halting problem in polynomial time'],
+    correct: 2,
+    explanation: 'Turing proved that no algorithm can correctly decide for ALL possible programs whether they halt. This is not a hardware limitation — it is mathematically impossible for any computer.'
+  },
+  {
+    id: '3.9', text: 'Which of the following best describes an algorithm that produces the SAME output for every run with the same inputs?',
+    options: ['Non-deterministic','Heuristic','Deterministic','Undecidable'],
+    correct: 2,
+    explanation: 'A deterministic algorithm always produces the same output given the same inputs. Non-deterministic algorithms (like those using RANDOM) can produce different outputs on different runs.'
+  }
+];
+
+// ── STATE ──
+let answered = new Array(questions.length).fill(false);
+let quizBuilt = false;
+
+function buildQuiz() {
+  quizBuilt = true;
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  answered = new Array(questions.length).fill(false);
+
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `q-${qi}`;
+
+    const letters = ['A','B','C','D'];
+    let optionsHTML = q.options.map((opt, oi) =>
+      `<button class="option-btn" onclick="selectAnswer(${qi},${oi})" id="opt-${qi}-${oi}">
+        <span class="option-letter">${letters[oi]}</span>${opt}
+      </button>`
+    ).join('');
+
+    card.innerHTML = `
+      <div class="q-num">Question ${qi+1} of ${questions.length} · Topic ${q.id}</div>
+      <div class="q-text">${q.text.replace(/\n/g,'<br>')}</div>
+      <div class="options">${optionsHTML}</div>
+      <div class="q-feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function selectAnswer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+
+  const q = questions[qi];
+  const card = document.getElementById(`q-${qi}`);
+  card.classList.add('answered');
+
+  const letters = ['A','B','C','D'];
+  q.options.forEach((_,i) => {
+    const btn = document.getElementById(`opt-${qi}-${i}`);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === oi && oi !== q.correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  const isCorrect = oi === q.correct;
+  fb.className = `q-feedback ${isCorrect ? 'correct' : 'wrong'}`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct' : '✗ Incorrect'}</strong>${q.explanation}`;
+
+  updateProgress();
+
+  if (answered.every(a => a)) {
+    setTimeout(showScore, 600);
+  }
+}
+
+function updateProgress() {
+  const n = answered.filter(Boolean).length;
+  const total = questions.length;
+  document.getElementById('progressFill').style.width = `${(n/total)*100}%`;
+  document.getElementById('progressLabel').textContent = `${n} / ${total} answered`;
+}
+
+function showScore() {
+  const correct = questions.filter((q,i) => {
+    const btns = document.querySelectorAll(`#q-${i} .option-btn`);
+    return btns[q.correct] && btns[q.correct].classList.contains('correct') &&
+      [...btns].some((b,bi) => b.classList.contains('correct') || b.classList.contains('wrong'));
+  }).length;
+
+  // Count actual correct by checking which options got the 'correct' class AND were clicked (not just auto-highlighted)
+  let score = 0;
+  questions.forEach((q,i) => {
+    const btns = document.querySelectorAll(`#q-${i} .option-btn`);
+    // If the correct button doesn't also have wrong styling, and a selection was made
+    const anyWrong = [...btns].some(b => b.classList.contains('wrong'));
+    const correctBtn = btns[q.correct];
+    if (correctBtn.classList.contains('correct') && !anyWrong) score++;
+  });
+
+  const total = questions.length;
+  const pct = Math.round((score/total)*100);
+  let cls = 'low', msg = '';
+  if (pct >= 90) { cls='great'; msg="Outstanding! You're fully prepared for this section of the AP exam."; }
+  else if (pct >= 75) { cls='good'; msg="Strong performance! Review the topics you missed and you'll be in great shape."; }
+  else if (pct >= 60) { cls='ok'; msg="Good start. Focus on the topics you missed and re-read those concept sections."; }
+  else { cls='low'; msg="Keep studying! Use the Study Guide tab to review each concept, then retake the test."; }
+
+  // Topic breakdown
+  const topicMap = {};
+  questions.forEach((q,i) => {
+    const t = q.id;
+    if (!topicMap[t]) topicMap[t] = {total:0,correct:0};
+    topicMap[t].total++;
+    const btns = document.querySelectorAll(`#q-${i} .option-btn`);
+    const anyWrong = [...btns].some(b => b.classList.contains('wrong'));
+    if (!anyWrong) topicMap[t].correct++;
+  });
+
+  let bdHTML = Object.entries(topicMap).map(([t,v]) => {
+    const p = Math.round((v.correct/v.total)*100);
+    const c = p===100?'#4fffb0':p>=50?'#7eb8ff':'#ff6b9d';
+    return `<div class="bd-item"><div class="bd-item-label">Topic ${t}</div><div class="bd-item-val" style="color:${c}">${p}%</div></div>`;
+  }).join('');
+
+  const panel = document.getElementById('scorePanel');
+  panel.className = 'score-panel show';
+  panel.innerHTML = `
+    <div class="score-big ${cls}">${score}/${total}</div>
+    <div class="score-label">${pct}% · Big Idea 3 Knowledge Check</div>
+    <div class="score-msg">${msg}</div>
+    <div class="breakdown">${bdHTML}</div>
+    <button class="retry-btn" onclick="retryQuiz()">↩ Retake Quiz</button>
+  `;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function retryQuiz() {
+  document.getElementById('scorePanel').className = 'score-panel';
+  buildQuiz();
+  document.getElementById('quizContainer').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
